@@ -34,9 +34,9 @@ def menuInicio():
 4.
 5. Salir.""")
     opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))
-    while opcionMenu != 5:
-        while opcionMenu !=5 and (opcionMenu <1 or opcionMenu>=5):
-            if opcionMenu != 5:
+    while opcionMenu != 0:
+        while opcionMenu !=0 and (opcionMenu <1 or opcionMenu>5):
+            if opcionMenu != 0:
                 print("\n Error. Seleccione una de las opciones siguientes.")
                 print("""Menú de opciones:
         1. 
@@ -46,7 +46,7 @@ def menuInicio():
         5. Salir.""")
                 opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))
             else:
-                opcionMenu= 5 #Finalizar programa
+                opcionMenu= 0 #Finalizar programa
     print("Finalizando programa")    
         
         
