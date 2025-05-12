@@ -1,31 +1,49 @@
 usuarios = ["prueba","prueba2"]
 contrasenas = ["123","prueba2"]
 
-def login():
+def login(listaUsuarios, listaContrasenas):
     usuarioExiste = 0
-    
+    claveIncorrecta = 1
+
     while usuarioExiste == 0:
         preguntarUsuario= str(input("Ingrese su nombre de usuario: "))
-        for i in range(len(usuarios)):
-            if preguntarUsuario == usuarios[i]:
+        for i in range(len(listaUsuarios)):
+            if preguntarUsuario == listaUsuarios[i]:
                 usuarioExiste = 1
                 indexUsuario = i
         if usuarioExiste == 0:
             print("Error. Usuario no existente.")
 
-    intentos = 3
-    while intentos > 0 and intentos !=99:
+    
+    while claveIncorrecta == 1:
         preguntarContrasenia = str(input("Ingrese su contraseña: "))    
-        if preguntarContrasenia == contrasenas[indexUsuario]:
-            intentos = 99
+        if preguntarContrasenia == listaContrasenas[indexUsuario]:
+            claveIncorrecta = 0
+            print("Contraseña correcta. Bienvenido/a", listaUsuarios[indexUsuario],"!")
         else:
-            intentos -= 1
             print("Error. Contraseña incorrecta.")
-            print("Te quedan", intentos, "intentos.")
-    if intentos == 99: #Contraseña correcta
-        print("Contraseña correcta. Bienvenido/a", usuarios[indexUsuario],"!")
-    else:
-        print("Vuelve a intentarlo más tarde.")
 
 
-login()
+login(usuarios,contrasenas)
+
+def menuInicio():
+    print("""Menú de opciones:
+1.
+2.
+3.
+4.
+5.""")
+    opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))
+    while opcionMenu <1 or opcionMenu>5:
+        print("\n Error. Seleccione una de las opciones siguientes.")
+        print("""Menú de opciones:
+1.
+2.
+3.
+4.
+5.""")
+        opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))
+        
+        
+
+menuInicio()
