@@ -45,30 +45,43 @@ def login(listaUsuarios, listaContrasenas):
 
 login(usuariosID, contrasenas)
 
-
-def menuInicio():
-    print("Menú de opciones: \n 0. Finalizar programa. \n 1. Registrar usuarios \n 2. Generar turnos. \n 3. Modificar turnos.\n 4. Eliminar turnos.")
+def menuUsuarios():
+    print("Abriendo menú de usuarios...")
+    print("\n Menu de usuarios")
+    print(" Menú de opciones: \n 0. Volver atrás. \n 1. Registrar usuario \n 2. Eliminar usuarios \n 3. Modificar datos del usuario")
     opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))  #Variable para finalizar programa o volver para atrás
     while opcionMenu != 0:
-        while opcionMenu != 0 and (opcionMenu < 1 or opcionMenu > 5): #Validación de la opción de Menú
+        while opcionMenu != 0 and (opcionMenu < 1 or opcionMenu > 3): #Validación de la opción de Menú
             if opcionMenu != 0:
                 print("\n Error. Seleccione una de las opciones siguientes.")
-                print("Menú de opciones: \n 0. Finalizar programa. \n 1. Registrar usuarios \n 2. Generar turnos. \n 3. Modificar turnos.\n 4. Eliminar turnos.")
+                print(" Menú de opciones: \n 0. Volver atrás. \n 1. Registrar usuario \n 2. Eliminar usuarios \n 3. Modificar datos del usuario")
+                opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))
+        
+        if opcionMenu == 1:
+            RegistrarUsuario(usuariosID, contrasenas)
+
+def menuInicio():
+    print("\n Menu principal")
+    print(" Menú de opciones: \n 0. Finalizar programa. \n 1. Usuarios \n 2. Turnos.")
+    opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))  #Variable para finalizar programa o volver para atrás
+    while opcionMenu != 0:
+        while opcionMenu != 0 and (opcionMenu < 1 or opcionMenu > 2): #Validación de la opción de Menú
+            if opcionMenu != 0:
+                print("\n Error. Seleccione una de las opciones siguientes.")
+                print(" Menú de opciones: \n 0. Finalizar programa. \n 1. Usuarios \n 2. Turnos.")
                 opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))
 
         if opcionMenu == 1:
             print("Opción 1.")
-            RegistrarUsuario(usuariosID, contrasenas)
-            print("Lista de IDs:", usuariosID)
-            print("Lista contraseñas", contrasenas)
+            menuUsuarios()
 
         elif opcionMenu == 2:
             print("")
         
-        print("Menú de opciones: \n 0. Finalizar programa. \n 1. Registrar usuarios \n 2. Generar turnos. \n 3. Modificar turnos.\n 4. Eliminar turnos.")
+        print(" Menú de opciones: \n 0. Finalizar programa. \n 1. Usuarios \n 2. Turnos.")
         opcionMenu = int(input("Ingrese el número correspondiente para acceder: "))
     
     print("Finalizando programa")
 
-
 menuInicio()
+
