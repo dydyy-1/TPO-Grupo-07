@@ -1,6 +1,5 @@
 import random
 
-
 def busquedaSecuencialOrdenada(unaLista, item):
     pos = 0
     encontrado = False
@@ -41,7 +40,10 @@ def modificarTurno(lista_idsTurnos, lista_idsClientes):
         print("Error. El ID ya existe.")
         nuevo_cliente = int(input("Nuevo ID del cliente: "))
     
-    nuevo_estado = input("Nuevo estado del turno: ")
+    nuevo_estado = input("Nuevo estado del turno: \n 1. En proceso \n 2. Finalizado.")
+    while nuevo_estado != 1 and nuevo_estado != 2:
+        print("Error. Ingrese un estado válido.")
+        nuevo_estado = input("Nuevo estado del turno: \n 1. En proceso \n 2. Finalizado.")
 
     # Modificación en listas paralelas
     lista_idsTurnos[pos] = nuevo_id
