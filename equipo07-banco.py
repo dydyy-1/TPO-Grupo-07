@@ -1,6 +1,19 @@
 import random
 
-def busquedaSecuencialOrdenada(unaLista, item):
+def mostrarUsuario(lista_idsUsuarios,listaNombres,listaEstados,lista_idsTurnos):
+    if len(lista_idsUsuarios)==0 or len(lista_idsTurnos)==0:
+        print("Error. No hay usuarios registrados.")
+        return
+    
+    print("\n Mostrando usuarios...")
+    for i in range(len(lista_idsTurnos)):
+        if listaEstados[i]==1:
+            print(f"{i+1}. ID de Usuario: {lista_idsUsuarios[i]}, Nombre: {listaNombres[i]}, ID de Turno {lista_idsTurnos[i]}, Estado: En proceso.")
+        else:
+            print(f"{i+1}. ID de Usuario: {lista_idsUsuarios[i]}, Nombre: {listaNombres[i]}, ID de Turno {lista_idsTurnos[i]}, Estado: Finalizado.")
+
+
+def busquedaSecuencial(unaLista, item):
     pos = 0
     encontrado = False
     parar = False
@@ -31,12 +44,12 @@ def modificarTurno(lista_idsTurnos, lista_idsClientes):
     print("Ingrese los nuevos datos para el turno:")
     nuevo_id = int(input("Nuevo ID del turno: "))
     
-    while busquedaSecuencialOrdenada(lista_idsTurnos, nuevo_id):
+    while busquedaSecuencial(lista_idsTurnos, nuevo_id):
         print("Error. El ID ya existe.")
         nuevo_id = int(input("Nuevo ID del turno: "))
         
     nuevo_cliente = int(input("Nuevo ID del cliente: "))
-    while busquedaSecuencialOrdenada(lista_idsClientes, nuevo_cliente):
+    while busquedaSecuencial(lista_idsClientes, nuevo_cliente):
         print("Error. El ID ya existe.")
         nuevo_cliente = int(input("Nuevo ID del cliente: "))
     
@@ -74,7 +87,7 @@ def generarTramite(listaTramites,listaEstados,lista_idsUsuarios):
         return
     while cont < cantidad:
             tramiteId = random.randint(1, 999)
-            encontrado= busquedaSecuencialOrdenada(listaTramites, tramiteId)
+            encontrado= busquedaSecuencial(listaTramites, tramiteId)
             if encontrado == False:
                 listaTramites.append(tramiteId)
                 cont +=1
@@ -103,7 +116,7 @@ def RegistrarUsuario(listaUsuarios, listaNombres):
         while id < 1000 or id > 9999: #Validamos que sea de 4 dígitos
             id = int(input("Error. Ingrese el id del usuario a registrar (cuatro dígitos): "))
         
-        while busquedaSecuencialOrdenada(listaUsuarios, id):
+        while busquedaSecuencial(listaUsuarios, id):
             print("Error. El ID ya existe.")
             id = int(input("Ingrese el id del usuario a registrar (cuatro dígitos): "))
         
@@ -114,7 +127,7 @@ def RegistrarUsuario(listaUsuarios, listaNombres):
         cont += 1
                            
 
-def login(listaUsuarios, listaContrasenas, listaNombres):
+def login(listaUsuarios, listaContrasenas, nombreAdmin):
     usuarioExiste = 0
     claveIncorrecta = 1
 
@@ -131,7 +144,7 @@ def login(listaUsuarios, listaContrasenas, listaNombres):
         preguntarContrasenia = str(input("Ingrese su contraseña: "))
         if preguntarContrasenia == listaContrasenas[indexUsuario]:
             claveIncorrecta = 0
-            print("Contraseña correcta. Bienvenido/a", listaNombres[indexUsuario], "!")
+            print("Contraseña correcta. Bienvenido/a", nombreAdmin[indexUsuario], "!")
         else:
             print("Error. Contraseña incorrecta.")
 
@@ -140,7 +153,7 @@ def menuUsuarios():
     print("Menú de gestión de usuarios: \n 0. Volver al menú principal \n 1. Registrar usuario \n 2. Eliminar usuario \n 3. Modificar datos de un usuario \n 4. Buscar usuario. \n 5.Ver todos los usuarios.")
     opcionMenu = int(input("Ingrese el número correspondiente para acceder: ")) 
     while opcionMenu != 0:
-        while opcionMenu != 0 and (opcionMenu < 1 or opcionMenu > 4): #Validación de la opción de Menú
+        while opcionMenu != 0 and (opcionMenu < 1 or opcionMenu > 5): #Validación de la opción de Menú
             if opcionMenu != 0:
                 print("\n Error. Seleccione una de las opciones siguientes.")
                 print("Menú de gestión de usuarios: \n 0. Volver al menú principal \n 1. Registrar usuario \n 2. Eliminar usuario \n 3. Modificar datos de un usuario \n 4. Buscar usuario. \n 5.Ver todos los usuarios.")
@@ -156,7 +169,7 @@ def menuUsuarios():
         elif opcionMenu == 4:
             print("")
         elif opcionMenu==5:
-            print("")
+            mostrarUsuario(idClienteTurno,nombreUsuarios,estadosTurnos,idTurnos)
         
         # Cuando se terminan las otras funciones:
         print("\n Abriendo menú de usuarios...")
@@ -221,15 +234,16 @@ def menuInicio():
 
 #Listas de usuarios:
 idUsuarios=[-1]
-nombreUsuarios=["Administrador"]
-contrasenasUsuarios=["-1"]
+nombreAdmin=["Administrador"]
+contrasenaAdmin=["-1"]
 
 #Listas de turnos
 idTurnos=[]
+nombreUsuarios=[]
 idClienteTurno=[]
 horaLlegada=[]
 tipoTramite=[]
 estadosTurnos=[]
 
-login(idUsuarios, contrasenasUsuarios, nombreUsuarios)
+login(idUsuarios, contrasenaAdmin, nombreAdmin)
 menuInicio()
