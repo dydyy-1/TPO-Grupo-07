@@ -1,5 +1,55 @@
 import random
 
+def busquedaSecuencialOrdenada(unaLista, item):
+    pos = 0
+    encontrado = False
+    parar = False
+    while pos < len(unaLista) and not encontrado and not parar:
+        if unaLista[pos] == item:
+            encontrado = True
+        else:
+            if unaLista[pos] > item:
+                parar = True
+            else:
+                pos = pos+1
+    return encontrado
+
+def verFinalizados(listaTramites,listaEstados):
+    print("\n Lista de turnos finalizados: ")
+    for i in range(len(listaTramites)):
+        if listaEstados[i] == 2:
+            print("ID del turno:", listaTramites[i])
+
+def verActivos(listaTramites,listaEstados):
+    print("\n Lista de turnos activos: ")
+    for i in range(len(listaTramites)):
+        if listaEstados[i] == 1:
+            print("ID del turno:", listaTramites[i])
+
+def generarTramite(listaTramites,listaEstados):
+    cont = 0
+    cantidad = int(input("Ingrese la cantidad de turnos para generar: "))
+    #Generar ids de turnos:
+
+    while cont < cantidad:
+            tramiteId = random.randint(1, 999)
+            encontrado= busquedaSecuencialOrdenada(listaTramites, tramiteId)
+            if encontrado == False:
+                listaTramites.append(tramiteId)
+                cont +=1
+    
+    
+    for i in range(cantidad):
+        turnosEstado=random.randint(1,2)
+        listaEstados.append(turnosEstado)
+        
+    for i in range(cantidad):
+        print("ID:", listaTramites[i])
+        if listaEstados[i] == 1:
+            print("Estado: En proceso")
+        else:
+            print("Estado: Finalizado")
+
 def RegistrarUsuario(listaUsuarios, listaContrasenas, listaNombres):
     cantidad = int(input("Ingrese la cantidad de usuarios para registrar: "))
     cont = 0
@@ -88,13 +138,13 @@ def menuTurnos():
         
         #Luego de validar opciones:
         if opcionMenu == 1:
-            print("")
+            generarTramite(idTurnos,estadosTurnos)
         elif opcionMenu == 2:
             print("")
         elif opcionMenu == 3:
-            print("")
+            verActivos(idTurnos,estadosTurnos)
         elif opcionMenu == 4:
-            print("")
+            verFinalizados(idTurnos,estadosTurnos)
         elif opcionMenu == 5:
             print("")
 
