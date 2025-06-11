@@ -38,6 +38,8 @@ def buscarUsuario(lista_idsUsuarios,listaNombres,lista_idsTurnos,listaEstados):
     else:
         print("No se encontró el usuario. ")
         return
+
+
 def eliminarUsuario(lista_idsTurnos, lista_idsClientes, listaEstados,listaNombres):
     if len(lista_idsTurnos) == 0 or len(lista_idsClientes)==0:
         print("Error. No hay turnos/usuarios registrados.")
@@ -221,11 +223,13 @@ def generarTramite(listaTramites,listaEstados,lista_idsUsuarios):
         cont+=1
         print(f"\n {cont}. \n")
         print(f"ID del turno: {listaTramites[i]}")
+        
         #Print estado:
         if listaEstados[i]== 1:
             print("Estado: En proceso.")
         else:
             print("Estado: Finalizado.")
+        
         #Print tipo de trámite:
         if tiposTurnos[i]==1:
             print("Tipo de trámite: Caja.")
@@ -233,6 +237,7 @@ def generarTramite(listaTramites,listaEstados,lista_idsUsuarios):
             print("Tipo de trámite: Préstamo.")
         else:
             print("Tipo de trámite: Atención al cliente.")
+        
         #Print del día
         if diasTurnos[i]==1:
             print("Día: Lunes")
@@ -291,6 +296,32 @@ def login(listaUsuarios, listaContrasenas, nombreAdmin):
         else:
             print("Error. Contraseña incorrecta.")
 
+def generarEstadisticas(lista_diasTurnos, lista_tiposTurnos):
+    if len(lista_diasTurnos)==0:
+        print("No hay turnos registrados.")
+        return
+    
+    matrizTurnos=[[0,0,0]for i in range(5)]
+    
+    for i in range(len(lista_diasTurnos)):
+        dia = lista_diasTurnos[i] - 1  # lunes=1 → índice 0
+        tipo = lista_tiposTurnos[i] - 1  # tipo 1=caja → índice 0
+        matrizTurnos[dia][tipo] += 1
+    
+    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+    tipos = ["Caja", "Préstamo", "Atención"]
+
+    print(f"\n {'':15}", end="")
+    for tipo in tipos:
+        print(f"{tipo:^15}", end="")
+    print()
+
+    for i in range(5):
+        print(f"{dias[i]:15}", end="")
+        for j in range(3):
+            print(f"{matrizTurnos[i][j]:15}", end="")
+        print()
+
 def menuUsuarios():
     print("\n Abriendo menú de usuarios...")
     print("Menú de gestión de usuarios: \n 0. Volver al menú principal \n 1. Registrar usuario \n 2. Eliminar usuario \n 3. Modificar datos de un usuario \n 4. Buscar usuario. \n 5.Ver todos los usuarios.")
@@ -342,7 +373,7 @@ def menuTurnos():
         elif opcionMenu == 4:
             verFinalizados(idTurnos,estadosTurnos)
         elif opcionMenu == 5:
-            print("")
+            generarEstadisticas(diasTurnos, tiposTurnos)
 
         # Cuando se terminan las otras funciones:
         print("\n Abriendo menú de turnos...")
