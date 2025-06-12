@@ -8,6 +8,13 @@ def busquedaSecuencial_pos(unaLista, item):
         pos += 1
     return False, -1
 
+def ordenamientoSeleccion(lista):
+    for i in range(len(lista)-1):
+        for j in range (i+1,len(lista)):
+            if lista[i] > lista[j]:
+                aux=lista[i]
+                lista[i]=lista[j]
+                lista[j]=aux
 
 def buscarUsuario(lista_idsUsuarios,listaNombres,lista_idsTurnos,listaEstados):
     if len(lista_idsTurnos) == 0 or len(lista_idsUsuarios)==0:
@@ -170,7 +177,7 @@ def verFinalizados(listaTramites,listaEstados):
             print("ID del turno:", listaTramites[i])
             existenTurnos = 1
     if existenTurnos ==0:
-        print("No se encontraron turnos activos.")
+        print("No se encontraron turnos finalizados.")
 
 def verActivos(listaTramites,listaEstados):
     if len(listaTramites) == 0:
@@ -212,6 +219,11 @@ def generarTramite(listaTramites,listaEstados,lista_idsUsuarios):
                 listaTramites.append(tramiteId)
                 cont +=1
     
+    print("\n Ordenando lista...")
+    print("Lista antes de ordenar:", listaTramites)
+    ordenamientoSeleccion(listaTramites)
+    print("Lista después de ordenar:", listaTramites)
+
     for i in range(cantidad):
         #Generamos el estado del turno:
         turnosEstado=random.randint(1,2)
