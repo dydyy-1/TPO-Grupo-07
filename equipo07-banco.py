@@ -1,5 +1,21 @@
 import random
+## VARIABLES GLOBALES
+#Listas de usuarios:
+idUsuarios=[-1]
+nombreAdmin=["Administrador"]
+contrasenaAdmin=["-1"]
 
+#Listas de turnos
+idTurnos=[] #ID DEL TURNO
+nombreUsuarios=[]
+idClienteTurno=[] #IDS DE USUARIOS
+estadosTurnos=[]
+tiposTurnos=[]
+diasTurnos=[]
+horaTurnos=[]
+
+
+## FUNCIONES
 def busquedaSecuencial_pos(unaLista, item):
     pos = 0
     while pos < len(unaLista):
@@ -59,17 +75,47 @@ def eliminarUsuario(lista_idsTurnos, lista_idsClientes, listaEstados,listaNombre
 
     print("\n Turno eliminado con éxito.")
 
-def mostrarUsuario(lista_idsUsuarios,listaNombres,listaEstados,lista_idsTurnos):
-    if len(lista_idsTurnos) == 0 or len(lista_idsUsuarios)==0:
+def mostrarUsuario(lista_idsUsuarios,lista_idsTurnos):
+    if len(lista_idsUsuarios)==0:
         print("\n Error. No hay turnos/usuarios registrados.")
         return
     
     print("\n Mostrando usuarios...")
-    for i in range(len(lista_idsTurnos)):
-        if listaEstados[i]==1:
-            print(f"{i+1}. ID de Usuario: {lista_idsUsuarios[i]}, Nombre: {listaNombres[i]}, ID de Turno {lista_idsTurnos[i]}, Estado: En proceso.")
-        else:
-            print(f"{i+1}. ID de Usuario: {lista_idsUsuarios[i]}, Nombre: {listaNombres[i]}, ID de Turno {lista_idsTurnos[i]}, Estado: Finalizado.")
+    if len(lista_idsTurnos)==0:
+        for i in range(len(lista_idsUsuarios)):
+            print(f"\n {i+1}. ID de Usuario: {lista_idsUsuarios[i]}, Nombre: {nombreUsuarios[i]}")
+    else:
+        for i in range(len(lista_idsUsuarios)):
+            print(f"\n {i+1}. ID de Usuario: {lista_idsUsuarios[i]}, Nombre: {nombreUsuarios[i]}")
+            print("--> ID del turno: ", idTurnos[i])
+            
+            print("--> Estado del turno: ", end="")
+            if estadosTurnos[i]==1:
+                print("En proceso.")
+            else:
+                print("Finalizado")
+            
+            print("--> Tipo de turno: ", end="")
+            if tiposTurnos[i]==1:
+                print("Caja.")
+            elif tiposTurnos[i]==2:
+                print("Préstamo.")
+            else:
+                print("Atención al cliente.")
+
+            print("--> Día del turno: ", end="")
+            if diasTurnos[i]==1:
+                print("Lunes")
+            elif diasTurnos[i]==2:
+                print("Martes")
+            elif diasTurnos[i]==3:
+                print("Miércoles")
+            elif diasTurnos[i]==4:
+                print("Jueves")
+            else:
+                print("Día: Viernes")
+            
+            print("--> Hora del turno: ", horaTurnos[i], "hs")
 
 
 def busquedaSecuencial(unaLista, item):
@@ -115,43 +161,149 @@ def modificarCliente(lista_idsClientes, listaNombres):
 
     print("\n Datos del cliente modificados con éxito.")
 
-def modificarTurno(lista_idsTurnos,lista_idsClientes, listaEstados):
+def modificarIDTurno(lista_idsTurnos,indiceLista):
+    nuevo_id = int(input("Nuevo ID del turno: "))
+    while busquedaSecuencial(lista_idsTurnos, nuevo_id):
+        print("Error. El ID ya existe.")
+        nuevo_id = int(input("Nuevo ID del turno: "))
+    
+    lista_idsTurnos[indiceLista] = nuevo_id
+    print("ID modificado con éxito")
+
+def modificarHoraTurno(listaHorasTurnos,indiceLista):
+    print("Hora del turno actual: ",listaHorasTurnos[indiceLista], "hs")
+    confirmar= int(input("¿Desea modificar la hora asociada? \n 1. Si \n 2. No: "))
+    while confirmar != 1 and confirmar !=2:
+        print("\n Error.")
+        confirmar= int(input("¿Desea modificar la hora asociada? \n 1. Si \n 2. No: "))
+    
+    if confirmar == 2:
+        return
+    
+    nueva_hora=int(input("Ingrese la nueva hora: (entre 7 y 18 hs): "))
+    while nueva_hora < 7 or nueva_hora>18:
+        print("\n Error")
+        nueva_hora=int(input("Ingrese la nueva hora: (entre 7 y 18 hs): "))
+    
+    listaHorasTurnos[indiceLista]= nueva_hora
+    print("Hora modificada con éxito")
+
+def modificarDiaTurno(listaDiasTurnos,indiceLista):
+    print("Día del turno actual:", end="")
+    if listaDiasTurnos[indiceLista]==1:
+        print("Lunes")
+    elif listaDiasTurnos[indiceLista]==2:
+        print("Martes")
+    elif listaDiasTurnos[indiceLista]==3:
+        print("Miércoles")
+    elif listaDiasTurnos[indiceLista]==4:
+        print("Jueves")
+    else:
+        print("Día: Viernes")
+    
+    confirmar= int(input("¿Desea modificar el día asociado? \n 1. Si \n 2. No: "))
+    while confirmar != 1 and confirmar !=2:
+        print("\n Error.")
+        confirmar= int(input("¿Desea modificar el día asociado? \n 1. Si \n 2. No: "))
+    
+    if confirmar == 2:
+        return
+    
+    nuevo_dia=int(input("Ingrese el nuevo día: \n 1. Lunes \n 2. Martes \n 3. Miércoles \n 4. Jueves \n 5. Viernes \n :"))
+    while nuevo_dia < 1 or nuevo_dia>5:
+        print("\n Error")
+        nuevo_dia=int(input("Ingrese el nuevo día: \n 1. Lunes \n 2. Martes \n 3. Miércoles \n 4. Jueves \n 5. Viernes \n :"))
+    
+    listaDiasTurnos[indiceLista]= nuevo_dia
+    print("Día modificado con éxito")
+
+def modificarTipoTramite(listaTiposTurnos,indiceLista):
+    print("Tipo de turno actual: ", end="")
+    if listaTiposTurnos[indiceLista]==1:
+        print("Caja.")
+    elif listaTiposTurnos[indiceLista]==2:
+        print("Préstamo.")
+    else:
+        print("Atención al cliente.")
+
+    confirmar= int(input("¿Desea modificar la hora asociada? \n 1. Si \n 2. No: "))
+    while confirmar != 1 and confirmar !=2:
+        print("\n Error.")
+        confirmar= int(input("¿Desea modificar la hora asociada? \n 1. Si \n 2. No: "))
+    
+    if confirmar == 2:
+        return
+    
+    nuevo_tipo=int(input("Ingrese el nuevo tipo de trámite: \n 1. Caja \n 2. Préstamo \n 3. Atención al cliente: "))
+    while nuevo_tipo < 1 or nuevo_tipo>3:
+        print("\n Error")
+        nuevo_tipo=int(input("Ingrese el nuevo tipo de trámite: \n 1. Caja \n 2. Préstamo \n 3. Atención al cliente: "))
+    
+    listaTiposTurnos[indiceLista]= nuevo_tipo
+    print("Tipo de trámite modificado con éxito")
+
+def modificarEstadoTurno(listaEstados,indiceLista):
+    print("Estado de turno actual: ", end="")
+    if listaEstados[indiceLista]==1:
+        print("En proceso.")
+    else:
+        print("Finalizado.")
+
+    confirmar= int(input("¿Desea modificar el estado de turno? \n 1. Si \n 2. No: "))
+    while confirmar != 1 and confirmar !=2:
+        print("\n Error.")
+        confirmar= int(input("¿Desea modificar el estado de turno? \n 1. Si \n 2. No: "))
+    
+    if confirmar == 2:
+        return
+    
+    nuevo_estado=int(input("Ingrese el estado de turno: \n 1. En proceso \n 2. Finalizado."))
+    while nuevo_estado != 1 and nuevo_estado!=2:
+        print("\n Error")
+        nuevo_estado=int(input("Ingrese el estado de turno: \n 1. En proceso \n 2. Finalizado."))
+    
+    listaEstados[indiceLista]= nuevo_estado
+    print("Estado de turno modificado con éxito")
+
+def modificarTurno(lista_idsTurnos,lista_idsClientes):
     if len(lista_idsTurnos) == 0:
         print("\n No hay turnos registrados para modificar.")
         return
 
-    print("\n Turnos existentes:")
-    for i in range(len(lista_idsTurnos)):
-        if listaEstados[i]== 1:
-            print(f"{i+1}. ID Turno: {lista_idsTurnos[i]}, Cliente: {lista_idsClientes[i]}, Estado: En proceso.")
-        else:
-            print(f"{i+1}. ID Turno: {lista_idsTurnos[i]}, Cliente: {lista_idsClientes[i]}, Estado: Finalizado.")
-    
-    pos = int(input("Seleccione el número del turno que desea modificar: ")) - 1
-    while pos < 0 or pos >= len(lista_idsTurnos):
-        print("Selección inválida.")
-        pos = int(input("Seleccione el número del turno que desea modificar: ")) - 1
-    
-    print("Ingrese los nuevos datos para el turno:")
-    nuevo_id = int(input("Nuevo ID del turno: "))
-    
-    while busquedaSecuencial(lista_idsTurnos, nuevo_id):
-        print("Error. El ID ya existe.")
-        nuevo_id = int(input("Nuevo ID del turno: "))
+    continuar = 1
+    while continuar == 1:
+        print("\n Turnos existentes:")
+        for i in range(len(lista_idsTurnos)):
+            print(f"{i+1}. ID Turno: {lista_idsTurnos[i]}, Cliente: {lista_idsClientes[i]}")
         
-    
-    nuevo_estado = int(input("Nuevo estado del turno: \n1. En proceso \n2. Finalizado.\n"))
-    while nuevo_estado != 1 and nuevo_estado != 2:
-        print("Error. Ingrese un estado válido.")
-        nuevo_estado = input("Nuevo estado del turno: \n1. En proceso \n2. Finalizado.\n")
+        pos = int(input("Seleccione el número del turno que desea modificar: ")) - 1
+        while pos < 0 or pos >= len(lista_idsTurnos):
+            print("Selección inválida.")
+            pos = int(input("Seleccione el número del turno que desea modificar: ")) - 1
+        
+        print("Cúal de los siguientes datos desea modificar? \n 1. ID de turno. \n 2. Hora del turno \n 3. Día del turno. \n 4. Tipo de trámite. \n 5. Estado del turno")
+        opcion= int(input("Elija su opción: "))
+        while opcion <1 or opcion >5:
+            print("Error. Elija una de las siguientes: ")
+            print("Cúal de los siguientes datos desea modificar? \n 1. ID de turno. \n 2. Hora del turno \n 3. Día del turno. \n 4. Tipo de trámite. \n 5. Estado del turno")
+            opcion= int(input("Elija su opción: "))                
+        
+        if opcion == 1:
+            modificarIDTurno(lista_idsTurnos,pos)
+        elif opcion == 2:
+            modificarHoraTurno(horaTurnos,pos)
+        elif opcion == 3:
+            modificarDiaTurno(diasTurnos,pos)
+        elif opcion == 4:
+            modificarTipoTramite(diasTurnos,pos)
+        elif opcion == 5:
+            modificarEstadoTurno(estadosTurnos,pos)
 
-    # Modificación en listas paralelas
-    lista_idsTurnos[pos] = nuevo_id
-    if nuevo_estado == 1:
-        listaEstados[pos] = "En proceso"
-    else:
-        listaEstados[pos] = "Finalizado"
-
+        continuar= int(input("¿Desea modificar otro dato? \n 1. Si \n 2. No: "))
+        while continuar !=1 and continuar != 2:
+            print("Error. Seleccione una de las siguientes opciones: ")
+            continuar= int(input("¿Desea modificar otro dato? \n 1. Si \n 2. No: "))
+        
     print("\n Turno modificado con éxito.")
 
 
@@ -344,6 +496,8 @@ def generarEstadisticas(lista_diasTurnos, lista_tiposTurnos):
             print(f"{matrizTurnos[i][j]:15}", end="")
         print()
 
+
+## PROGRAMA PRINCIPAL
 def menuUsuarios():
     print("\n Abriendo menú de usuarios...")
     print("Menú de gestión de usuarios: \n 0. Volver al menú principal \n 1. Registrar usuario \n 2. Eliminar usuario \n 3. Modificar datos de un usuario \n 4. Buscar usuario. \n 5.Ver todos los usuarios.")
@@ -365,7 +519,7 @@ def menuUsuarios():
         elif opcionMenu == 4:
             buscarUsuario(idClienteTurno,nombreUsuarios,idTurnos,estadosTurnos)
         elif opcionMenu==5:
-            mostrarUsuario(idClienteTurno,nombreUsuarios,estadosTurnos,idTurnos)
+            mostrarUsuario(idClienteTurno,idTurnos)
         
         # Cuando se terminan las otras funciones:
         print("\n Abriendo menú de usuarios...")
@@ -389,7 +543,7 @@ def menuTurnos():
         if opcionMenu == 1:
             generarTramite(idTurnos,estadosTurnos,idClienteTurno)
         elif opcionMenu == 2:
-            modificarTurno(idTurnos,idClienteTurno,estadosTurnos)
+            modificarTurno(idTurnos,idClienteTurno)
         elif opcionMenu == 3:
             verActivos(idTurnos,estadosTurnos)
         elif opcionMenu == 4:
@@ -429,21 +583,6 @@ def menuInicio():
     
     print("Finalizando programa")
 
-#Listas de usuarios:
-idUsuarios=[-1]
-nombreAdmin=["Administrador"]
-contrasenaAdmin=["-1"]
-
-#Listas de turnos
-idTurnos=[]
-nombreUsuarios=[]
-idClienteTurno=[]
-horaLlegada=[]
-tipoTramite=[]
-estadosTurnos=[]
-tiposTurnos=[]
-diasTurnos=[]
-horaTurnos=[]
 
 login(idUsuarios, contrasenaAdmin, nombreAdmin)
 menuInicio()
