@@ -18,21 +18,11 @@ def ordenamientoSeleccion(lista):
 
 def buscarUsuario(lista_idsUsuarios,listaNombres,lista_idsTurnos,listaEstados):
     if len(lista_idsTurnos) == 0 or len(lista_idsUsuarios)==0:
-        print("Error. No hay turnos/usuarios registrados.")
+        print("\n Error. No hay turnos/usuarios registrados.")
         return
 
-    buscar = int(input("Buscar usuario con: \n 1. ID \n 2. Nombre. \n Ingrese su opción: "))
-    while buscar != 1 and buscar !=2:
-        print("Error. Seleccione una de las siguientes: ")
-        buscar = int(input("Buscar usuario con: \n 1. ID \n 2. Nombre. \n Ingrese su opción: "))
-    
-    if buscar == 1:
-        id= int(input("Ingrese el ID del usuario para buscar: "))
-        encontrado, pos = busquedaSecuencial_pos(lista_idsUsuarios,id)
-        
-    else:
-        nombre= input("Ingrese el ID del usuario para buscar: ")
-        encontrado, pos = busquedaSecuencial_pos(listaNombres,nombre)
+    id= int(input("Ingrese el ID del usuario para buscar: "))
+    encontrado, pos = busquedaSecuencial_pos(lista_idsUsuarios,id)
     
     if encontrado:
             if len(lista_idsTurnos) != 0:
@@ -43,13 +33,13 @@ def buscarUsuario(lista_idsUsuarios,listaNombres,lista_idsTurnos,listaEstados):
             else:
                 print(f"Datos del usuario: \n ID: {lista_idsUsuarios[pos]}, \n Nombre : {listaNombres[pos]}, \n No se encontraron turnos registrados.")
     else:
-        print("No se encontró el usuario. ")
+        print("\n No se encontró el usuario. ")
         return
 
 
 def eliminarUsuario(lista_idsTurnos, lista_idsClientes, listaEstados,listaNombres):
     if len(lista_idsTurnos) == 0 or len(lista_idsClientes)==0:
-        print("Error. No hay turnos/usuarios registrados.")
+        print("\n Error. No hay turnos/usuarios registrados.")
         return
 
     print("\n Turnos existentes:")
@@ -67,11 +57,11 @@ def eliminarUsuario(lista_idsTurnos, lista_idsClientes, listaEstados,listaNombre
     listaEstados.pop(pos)
     listaNombres.pop(pos)
 
-    print("Turno eliminado con éxito.")
+    print("\n Turno eliminado con éxito.")
 
 def mostrarUsuario(lista_idsUsuarios,listaNombres,listaEstados,lista_idsTurnos):
     if len(lista_idsTurnos) == 0 or len(lista_idsUsuarios)==0:
-        print("Error. No hay turnos/usuarios registrados.")
+        print("\n Error. No hay turnos/usuarios registrados.")
         return
     
     print("\n Mostrando usuarios...")
@@ -98,7 +88,7 @@ def busquedaSecuencial(unaLista, item):
 
 def modificarCliente(lista_idsClientes, listaNombres):
     if len(lista_idsClientes) == 0:
-        print("Error. No hay clientes registrados para modificar.")
+        print("\n Error. No hay clientes registrados para modificar.")
         return
 
     print("\n Clientes existentes:")
@@ -123,11 +113,11 @@ def modificarCliente(lista_idsClientes, listaNombres):
     lista_idsClientes[pos] = nuevo_id
     listaNombres[pos]=nuevo_nombre
 
-    print("Datos del cliente modificados con éxito.")
+    print("\n Datos del cliente modificados con éxito.")
 
 def modificarTurno(lista_idsTurnos,lista_idsClientes, listaEstados):
     if len(lista_idsTurnos) == 0:
-        print("No hay turnos registrados para modificar.")
+        print("\n No hay turnos registrados para modificar.")
         return
 
     print("\n Turnos existentes:")
@@ -162,12 +152,12 @@ def modificarTurno(lista_idsTurnos,lista_idsClientes, listaEstados):
     else:
         listaEstados[pos] = "Finalizado"
 
-    print("Turno modificado con éxito.")
+    print("\n Turno modificado con éxito.")
 
 
 def verFinalizados(listaTramites,listaEstados):
     if len(listaTramites) == 0:
-        print("Error. No hay turnos registrados.")
+        print("\n Error. No hay turnos registrados.")
         return
     
     existenTurnos= 0
@@ -191,19 +181,34 @@ def verActivos(listaTramites,listaEstados):
             print("ID del turno:", listaTramites[i])
             existenTurnos = 1
     if existenTurnos ==0:
-        print("No se encontraron turnos activos.")
+        print("\n No se encontraron turnos activos.")
 
-def generarTipo_Dia(listaTurnos, listaTipos, listaDias):
+def generarTipoTurno(listaTurnos, listaTipos):
     if len(listaTurnos) == 0:
-        print("Error. No hay turnos registrados.")
+        print("\n Error. No hay turnos registrados.")
         return
 
     for i in range(len(listaTurnos)):
-        tipoTurno=random.randint(1,3)
+        tipoTurno = random.randint(1, 3)
         listaTipos.append(tipoTurno)
 
-        turnoDia=random.randint(1,5)
+def generarDiaTurno(listaTurnos, listaDias):
+    if len(listaTurnos) == 0:
+        print("\n Error. No hay turnos registrados.")
+        return
+
+    for i in range(len(listaTurnos)):
+        turnoDia = random.randint(1, 5)
         listaDias.append(turnoDia)
+
+def generarHoraTurno(listaTurnos,listaHoras):
+    if len(listaTurnos) == 0:
+        print("\n Error. No hay turnos registrados.")
+        return
+    
+    for i in range(len(listaTurnos)):
+        hora= random.randint(7,18)
+        listaHoras.append(hora)
 
 def generarTramite(listaTramites,listaEstados,lista_idsUsuarios):
     cont = 0
@@ -229,7 +234,10 @@ def generarTramite(listaTramites,listaEstados,lista_idsUsuarios):
         turnosEstado=random.randint(1,2)
         listaEstados.append(turnosEstado)
     
-    generarTipo_Dia(listaTramites,tiposTurnos,diasTurnos)
+    generarTipoTurno(listaTramites, tiposTurnos)
+    generarDiaTurno(listaTramites, diasTurnos)
+    generarHoraTurno(listaTramites,horaTurnos)
+    
     cont=0
     for i in range(cantidad):
         cont+=1
@@ -261,7 +269,9 @@ def generarTramite(listaTramites,listaEstados,lista_idsUsuarios):
             print("Día: Jueves")
         else:
             print("Día: Viernes")
-            
+        
+        # Print de la hora:
+        print("Hora del turno:", horaTurnos[i], "hs")
 
 def RegistrarUsuario(listaUsuarios, listaNombres):
     cantidad = int(input("Ingrese la cantidad de usuarios para registrar: "))
@@ -396,6 +406,7 @@ def menuTurnos():
 
 def menuInicio():
     print("\n Menu principal")
+    print("Por favor, registre al menos un cliente y un turno antes de iniciar la ejecución del sistema.")
     print("Menú de opciones: \n 0. Finalizar programa. \n 1. Gestión de usuarios \n 2. Gestión de turnos.")
     opcionMenu = int(input("Ingrese el número correspondiente para acceder: ")) 
     while opcionMenu != 0:
@@ -432,6 +443,7 @@ tipoTramite=[]
 estadosTurnos=[]
 tiposTurnos=[]
 diasTurnos=[]
+horaTurnos=[]
 
 login(idUsuarios, contrasenaAdmin, nombreAdmin)
 menuInicio()
